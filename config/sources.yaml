@@ -1,0 +1,270 @@
+# 新闻源配置文件
+
+sources:
+  # 路透社 - 权威金融新闻
+  reuters:
+    name: "Reuters"
+    enabled: true
+    url: "https://www.reuters.com"
+    rss_feeds:
+      - "https://www.reuters.com/rssFeed/technology"
+      - "https://www.reuters.com/rssFeed/business"
+      - "https://www.reuters.com/financeRSS"
+    type: "rss"
+
+  #华尔街见闻 - 中文金融资讯
+  wsj_chinese:
+    name: "WSJ Chinese"
+    enabled: true
+    url: "https://cn.wsj.com"
+    rss_feeds:
+      - "https://cn.wsj.com/rss/market"
+      - "https://cn.wsj.com/rss/tech"
+    type: "rss"
+
+  # 彭博社 - 全球金融资讯
+  bloomberg:
+    name: "Bloomberg"
+    enabled: true
+    url: "https://www.bloomberg.com"
+    rss_feeds:
+      - "https://feeds.bloomberg.com/markets/news.rss"
+      - "https://feeds.bloomberg.com/technology/news.rss"
+    type: "rss"
+
+  # CNBC - 投资和商业新闻
+  cnbc:
+    name: "CNBC"
+    enabled: true
+    url: "https://www.cnbc.com"
+    rss_feeds:
+      - "https://www.cnbc.com/id/100003114/device/rss/rss.html"
+      - "https://www.cnbc.com/id/10000127/device/rss/rss.html"
+    type: "rss"
+
+  # Yahoo Finance - 股市新闻
+  yahoo_finance:
+    name: "Yahoo Finance"
+    enabled: true
+    url: "https://finance.yahoo.com"
+    rss_feeds:
+      - "https://finance.yahoo.com/news/rssindex"
+      - "https://finance.yahoo.com/news/technology-rss"
+      - "https://finance.yahoo.com/news/sitemap_articles/newsindex.xml"
+    type: "rss"
+
+  # The Verge - 科技新闻
+  theverge:
+    name: "The Verge"
+    enabled: true
+    url: "https://www.theverge.com"
+    rss_feeds:
+      - "https://www.theverge.com/rss/index.xml"
+    type: "rss"
+
+  # Ars Technica - 深度科技新闻
+  arstechnica:
+    name: "Ars Technica"
+    enabled: true
+    url: "https://arstechnica.com"
+    rss_feeds:
+      - "https://feeds.arstechnica.com/arstechnica/index"
+    type: "rss"
+
+  # NVIDIA News
+  nvidia_news:
+    name: "NVIDIA News"
+    enabled: true
+    url: "https://nvidianews.nvidia.com"
+    rss_feeds:
+      - "https://nvidianews.nvidia.com/rss.xml"
+    type: "rss"
+
+  # AI News - 人工智能新闻
+  ai_news:
+    name: "AI News"
+    enabled: true
+    url: "https://artificialintelligence-news.com"
+    rss_feeds:
+      - "https://artificialintelligence-news.com/feed/"
+    type: "rss"
+
+  # MarketWatch - 市场观察
+  marketwatch:
+    name: "MarketWatch"
+    enabled: true
+    url: "https://www.marketwatch.com"
+    rss_feeds:
+      - "http://www.marketwatch.com/rss/topstories"  # HTTP版本（更稳定）
+      - "http://feeds.marketwatch.com/marketwatch/topstories"
+      - "https://www.marketwatch.com/rss/topstories"
+      - "https://www.marketwatch.com/rss/technology"
+    type: "rss"
+
+  # Seeking Alpha - 投资分析
+  seeking_alpha:
+    name: "Seeking Alpha"
+    enabled: true
+    url: "https://seekingalpha.com"
+    rss_feeds:
+      - "https://seekingalpha.com/article/rss.xml"
+    type: "rss"
+
+  # TechCrunch - 科技新闻
+  techcrunch:
+    name: "TechCrunch"
+    enabled: true
+    url: "https://techcrunch.com"
+    rss_feeds:
+      - "https://techcrunch.com/feed/"
+    type: "rss"
+
+  # ========================================
+  # 中国财经新闻网站
+  # ========================================
+
+  # 新浪财经 - 中国权威财经门户
+  sina_finance:
+    name: "新浪财经"
+    enabled: true
+    url: "https://finance.sina.com.cn"
+    rss_feeds:
+      - "http://rss.sina.com.cn/roll/finance/hot_roll.xml"  # 财经要闻汇总（HTTP更稳定）
+      - "http://rss.sina.com.cn/roll/stock/hot_roll.xml"  # 股票要闻汇总
+      - "http://rss.sina.com.cn/finance/fund.xml"  # 基金要闻
+      - "http://rss.sina.com.cn/finance/usstock.xml"  # 美股快报
+      - "http://rss.sina.com.cn/finance/hkstock.xml"  # 港股快讯
+    type: "rss"
+    # 新浪财经专用：允许使用description作为内容
+
+  # 东方财富网 - 中国领先财经门户
+  eastmoney:
+    name: "东方财富网"
+    enabled: true
+    url: "https://www.eastmoney.com"
+    rss_feeds:
+      - "http://www.eastmoney.com/rss/list.xml"  # RSS源
+      - "https://www.eastmoney.com/default.html"  # 首页
+      - "https://finance.eastmoney.com/news/cjyw.html"  # 财经要闻
+      - "https://stock.eastmoney.com/"  # 股票频道
+    type: "scrape"
+    scrape_config:
+      article_list: "https://www.eastmoney.com/default.html"
+      article_selector: "#media_list_ul li"
+
+  # 雪球网 - 股票社区
+  xueqiu:
+    name: "雪球网"
+    enabled: true
+    url: "https://xueqiu.com"
+    rss_feeds:
+      - "https://xueqiu.com/hots/topic/rss"  # 今日话题
+      - "https://xueqiu.com/snowballs/rss"  # 雪球
+    type: "rss"
+
+  # 同花顺 - 中国领先的证券信息提供商
+  tonghuashun:
+    name: "同花顺"
+    enabled: true
+    url: "https://www.10jqka.com.cn"
+    rss_feeds:
+      - "https://www.10jqka.com.cn/"  # 主页
+      - "https://www.10jqka.com.cn/newscore/"  # 最新资讯
+    type: "scrape"
+    scrape_config:
+      article_list: "https://www.10jqka.com.cn/"
+      article_selector: ".list-item"
+
+  # 中国证券报
+  china_securities:
+    name: "中国证券报"
+    enabled: true
+    url: "https://www.cs.com.cn"
+    rss_feeds:
+      - "https://www.cs.com.cn/rss/news.xml"  # 新闻RSS
+      - "https://www.cs.com.cn/"  # 主页作为备选
+    type: "scrape"
+    scrape_config:
+      article_list: "https://www.cs.com.cn/"
+      article_selector: ".news-item"
+
+  # 第一财经 - 中国商业财经媒体
+  yicai:
+    name: "第一财经"
+    enabled: true
+    url: "https://www.yicai.com"
+    rss_feeds:
+      - "https://www.yicai.com/rss/news.xml"  # 新闻RSS
+    type: "rss"
+
+  # 财新网 - 财经新闻
+  caixin:
+    name: "财新网"
+    enabled: true
+    url: "https://www.caixin.com"
+    rss_feeds:
+      - "https://www.caixin.com/rss/rss.xml"  # 新闻RSS
+    type: "rss"
+
+  # 网易财经
+  netease_finance:
+    name: "网易财经"
+    enabled: true
+    url: "https://money.163.com"
+    rss_feeds:
+      - "https://money.163.com/special/002557S6/newsdata.js"  # 特殊格式
+    type: "scrape"
+    scrape_config:
+      article_list: "https://money.163.com/special/002557S6/stocknews.html"
+      article_selector: ".news_item"
+
+  # 腾讯财经
+  tencent_finance:
+    name: "腾讯财经"
+    enabled: true
+    url: "https://finance.qq.com"
+    rss_feeds:
+      - "https://finance.qq.com/rss/index.xml"  # 财经RSS
+    type: "rss"
+
+  # 搜狐财经
+  sohu_finance:
+    name: "搜狐财经"
+    enabled: true
+    url: "https://business.sohu.com"
+    rss_feeds:
+      - "https://business.sohu.com/rss/business.xml"  # 财经RSS
+    type: "rss"
+
+  # 金融界
+  jrj:
+    name: "金融界"
+    enabled: true
+    url: "https://www.jrj.com.cn"
+    rss_feeds:
+      - "https://www.jrj.com.cn/rss/rss.xml"  # 财经RSS
+    type: "rss"
+
+  # ========================================
+  # 国际媒体（需要订阅）
+  # ========================================
+
+  # 金融时报 - 需要订阅
+  financial_times:
+    name: "Financial Times"
+    enabled: false  # 默认关闭，需要订阅
+    url: "https://www.ft.com"
+    type: "scrape"
+    scrape_config:
+      article_list: "https://www.ft.com/markets"
+      article_selector: "article"
+
+  # 华尔街日报 - 需要订阅
+  wall_street_journal:
+    name: "Wall Street Journal"
+    enabled: false  # 默认关闭，需要订阅
+    url: "https://www.wsj.com"
+    type: "scrape"
+    scrape_config:
+      article_list: "https://www.wsj.com/news/markets"
+      article_selector: "article"

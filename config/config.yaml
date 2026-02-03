@@ -1,0 +1,111 @@
+# 金融新闻摘要系统配置文件
+
+# Anthropic API配置（用于AI总结）
+api:
+  anthropic_api_key: "your_anthropic_api_key_here"  # 请替换为你的API密钥
+
+# 邮件发送配置（用于发送摘要）
+email:
+  enabled: false  # 默认关闭，使用Telegram发送
+  smtp_server: "smtp.gmail.com"  # 根据你的邮箱服务商修改
+  smtp_port: 587
+  sender_email: "your_email@gmail.com"  # 发件邮箱
+  sender_password: "your_app_password"  # 邮箱应用密码
+  recipient_email: "your_email@gmail.com"  # 收件邮箱
+
+# Telegram Bot配置（推荐使用）
+telegram:
+  enabled: true
+  bot_token: ${BOT_TOKEN}  # 从环境变量读取
+  chat_id: ${CHAT_ID}  # 从环境变量读取
+  # 代理配置（Clash Verge默认端口: 7897）
+  proxy_http: "${PROXY_HTTP}"  # 从环境变量读取
+  proxy_https: "${PROXY_HTTP}"  # 从环境变量读取
+
+# 定时任务配置（北京时间）
+scheduler:
+  timezone: "Asia/Shanghai"
+  send_times:
+    - "08:00"  # 早上8点
+    - "18:00"  # 晚上6点
+
+# 新闻关键词过滤
+keywords:
+  # 股指相关
+  indices:
+    - "S&P 500"
+    - "NASDAQ"
+    - "Dow Jones"
+    - "A-share"
+    - "Hang Seng"
+    - "Shenzhen"
+    - "Shanghai Composite"
+    - "CSI 300"
+    - "FTSE"
+    - "Nikkei"
+    - "上证指数"
+    - "深证成指"
+    - "创业板指"
+    - "恒生指数"
+    - "科创50"
+    - "沪深300"
+    - "中证500"
+    - "A股"
+    - "港股"
+    - "美股"
+
+  # 行业相关
+  sectors:
+    - "AI"
+    - "Artificial Intelligence"
+    - "Machine Learning"
+    - "Deep Learning"
+    - "Semiconductor"
+    - "Chip"
+    - "Cloud Computing"
+    - "SaaS"
+    - "Cybersecurity"
+
+  # 公司相关
+  companies:
+    - "Google"
+    - "Alphabet"
+    - "Amazon"
+    - "Microsoft"
+    - "Apple"
+    - "Meta"
+    - "Tesla"
+    - "NVIDIA"
+    - "AMD"
+    - "Intel"
+    - "TSMC"
+    - "Samsung"
+    - "Netflix"
+    - "阿里巴巴"
+    - "腾讯"
+    - "百度"
+    - "字节跳动"
+    - "美团"
+    - "京东"
+    - "拼多多"
+    - "网易"
+    - "小米"
+    - "比亚迪"
+    - "宁德时代"
+    - "茅台"
+    - "中芯国际"
+    - "中国移动"
+    - "中国平安"
+    - "招商银行"
+    - "工商银行"
+    - "建设银行"
+
+# 新闻抓取配置
+fetch:
+  timeout: 30  # 请求超时时间（秒）
+  max_articles_per_source: 10  # 每个源最多抓取文章数
+  retry_times: 3  # 失败重试次数
+  delay_between_requests: 2  # 请求间隔（秒）
+
+# 数据保留天数
+data_retention_days: 30
