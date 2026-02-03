@@ -185,7 +185,7 @@ class NewsFetcher:
         except Exception as e:
             return ""
 
-    def fetch_with_retries(self, source_name: str, source_config: Dict, max_articles: int = 3) -> List[Dict]:
+    def fetch_with_retries(self, source_name: str, source_config: Dict, max_articles: int = 5) -> List[Dict]:
         """带重试机制的抓取"""
         articles = []
 

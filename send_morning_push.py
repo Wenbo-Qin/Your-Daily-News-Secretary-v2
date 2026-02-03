@@ -28,7 +28,7 @@ def send_morning_push():
             articles = fetcher.fetch_with_retries(
                 source,
                 fetcher.sources[source],
-                max_articles=3
+                max_articles=5
             )
             if articles:
                 all_articles.extend(articles)

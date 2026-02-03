@@ -158,7 +158,7 @@ class FinanceSummarySender:
                     articles = self.fetcher.fetch_with_retries(
                         source,
                         self.fetcher.sources[source],
-                        max_articles=5
+                        max_articles=3
                     )
 
                     if articles:
