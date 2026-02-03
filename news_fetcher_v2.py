@@ -686,7 +686,7 @@ class NewsFetcher:
         return articles
 
     def _method_eastmoney_special(self, source_name: str, max_articles: int, source_config: Dict) -> List[Dict]:
-        """东方财富专用方法"""
+        """东方财富专用方法 - 使用简单User-Agent避免反爬虫"""
         if source_name != 'eastmoney':
             return []
 
@@ -694,104 +694,72 @@ class NewsFetcher:
         articles = []
 
         try:
-            # 东方财富的首页和财经要闻页面
-            urls_to_try = [
-                "https://www.eastmoney.com/default.html",
-                "https://www.eastmoney.com/"
-            ]
+            # 使用简单的User-Agent，避免触发反爬虫
+            url = "https://www.eastmoney.com/default.html"
+            headers = {'User-Agent': 'Mozilla/5.0'}
 
-            headers = {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-                'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8'
-            }
+            print(f"      访问: {url}")
+            response = requests.get(url, headers=headers, proxies=PROXIES, timeout=15)
+            print(f"      状态码: {response.status_code}")
 
-            for url in urls_to_try:
-                try:
-                    print(f"      尝试: {url[:50]}...")
-                    response = requests.get(url, headers=headers, proxies=PROXIES, timeout=30)
-                    response.raise_for_status()
-                    soup = BeautifulSoup(response.content, 'lxml')
+            if response.status_code != 200:
+                return articles
 
-                    # 东方财富首页的新闻列表选择器（多种可能）
-                    selectors = [
-                        '#media_list_ul li',
-                        '.list-content li',
-                        '.news-item',
-                        'ul.media-list li',
-                        '#newsContent li',
-                        'a[href*="/news/"]'
-                    ]
+            soup = BeautifulSoup(response.content, 'lxml')
 
-                    news_items = []
-                    for selector in selectors:
-                        items = soup.select(selector)
-                        if items:
-                            news_items = items[:max_articles * 2]
-                            print(f"      找到 {len(items)} 条，使用选择器: {selector}")
-                            break
+            # 查找所有包含 /news/ 的链接
+            all_links = soup.find_all('a', href=lambda x: x and '/news/' in str(x))
+            print(f"      找到 {len(all_links)} 个 /news/ 链接")
 
-                    if not news_items:
-                        print(f"      未找到新闻列表")
-                        continue
+            # 过滤出有效的新闻链接
+            seen_urls = set()
+            for link_tag in all_links:
+                if len(articles) >= max_articles:
+                    break
 
-                    for item in news_items:
-                        # 查找链接和标题
-                        if item.name == 'li':
-                            link_tag = item.find('a', href=True)
-                            if link_tag:
-                                title = link_tag.get_text(strip=True)
-                                href = link_tag.get('href', '')
-                            else:
-                                continue
-                        else:
-                            title = item.get_text(strip=True)
-                            href = item.get('href', '')
+                href = link_tag.get('href', '')
+                title = link_tag.get_text(strip=True)
 
-                        if title and href and len(title) > 10:
-                            # 处理相对URL
-                            if not href.startswith('http'):
-                                if href.startswith('//'):
-                                    href = 'https:' + href
-                                elif href.startswith('/'):
-                                    href = 'https://www.eastmoney.com' + href
-                                else:
-                                    href = 'https://www.eastmoney.com/' + href
-
-                            # 获取时间标签作为备选内容
-                            time_tag = item.find(['span', 'time'], class_=lambda x: x and 'time' in str(x).lower())
-                            time_str = time_tag.get_text(strip=True) if time_tag else ""
-
-                            # 获取内容
-                            content = self.fetch_full_article(href)
-                            if not content or len(content) < 50:
-                                content = f"{title} {time_str}".strip()
-
-                            if not content or len(content) < 20:
-                                content = title
-
-                            summary = self._generate_summary(title, content)
-
-                            articles.append({
-                                'title': title,
-                                'url': href,
-                                'content': content[:2000],
-                                'summary': summary,
-                                'source': source_name,
-                                'fetched_at': datetime.now().isoformat()
-                            })
-
-                            # 达到目标数量后停止
-                            if len(articles) >= max_articles:
-                                break
-
-                    if articles:
-                        print(f"    东方财富成功获取 {len(articles)} 篇")
-                        return articles
-
-                except Exception as e:
-                    print(f"      东方财富尝试 {url[:40]} 失败: {str(e)[:50]}")
+                # 过滤条件：必须有标题，长度>5，不是分类页面
+                if not title or len(title) <= 5:
                     continue
+
+                # 跳过分类页面（以.html结尾的通常是分类）
+                if href.endswith('.html'):
+                    continue
+
+                # 去重
+                if href in seen_urls:
+                    continue
+                seen_urls.add(href)
+
+                # 确保URL是完整的
+                if href.startswith('//'):
+                    href = 'https:' + href
+                elif not href.startswith('http'):
+                    href = 'https://www.eastmoney.com' + href
+
+                print(f"      处理: {title[:30]}...")
+
+                # 使用专用方法获取东方财富文章内容
+                content = self._fetch_eastmoney_article(href)
+
+                # 如果获取失败，使用标题
+                if not content or len(content) < 20:
+                    content = title
+
+                summary = self._generate_summary(title, content)
+
+                articles.append({
+                    'title': title,
+                    'url': href,
+                    'content': content[:2000],
+                    'summary': summary,
+                    'source': source_name,
+                    'fetched_at': datetime.now().isoformat()
+                })
+
+            print(f"    东方财富成功获取 {len(articles)} 篇")
 
         except Exception as e:
             print(f"    东方财富专用方法失败: {str(e)[:80]}")
