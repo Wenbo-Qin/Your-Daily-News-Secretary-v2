@@ -93,7 +93,7 @@ def main():
             ai_summary = f"""【总结】
 {content[:500]}
 
-**参考链接**
+【参考链接】
 {article.get('url', '')}"""
 
         news_item = f"""【{display_name}】{article['title']}
@@ -108,7 +108,7 @@ def main():
     # 发送结尾
     footer = f"""==================================================
 
-**重要消息分析**
+【重要消息】
 
 测试版本 - 获取了 {len(all_articles)} 条新闻
 

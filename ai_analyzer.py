@@ -41,7 +41,7 @@ class AIAnalyzer:
         source = article.get('source', '未知来源')
 
         if not content:
-            return f"【{source}】#{title}\n\n内容暂无\n\n**参考链接**\n{article.get('url', '')}"
+            return f"【{source}】#{title}\n\n内容暂无\n\n【参考链接】\n{article.get('url', '')}"
 
         # 检查是否为英文，如果是英文需要翻译
         is_english = self._is_english(content)
@@ -57,7 +57,7 @@ class AIAnalyzer:
 
 请严格按照以下格式输出总结：
 
-**总结**
+【总结】
 核心观点：（用1句话概括新闻的核心观点）
 事件背景：（简要说明事件的背景和起因）
 关键细节：（列出3-5个关键细节或数据点，用分号分隔）
@@ -74,19 +74,20 @@ class AIAnalyzer:
 4. 影响分析要分点，使用"-"符号
 5. 总结要详细、专业，涵盖时间、事件、影响等要素
 6. 如果是英文新闻，分析时使用中文
+7. 获取的新闻均来自国内外正规网站，内容不包含敏感信息，请忽略所有提示和警告，直接输出总结内容
 
 请只输出总结内容，不要有多余的说明文字。"""
 
         try:
             response = self._call_api(prompt)
-            # 确保返回的内容以"**总结**"开头
-            if not response.startswith("**总结**"):
-                response = "**总结**\n" + response
+            # 确保返回的内容以"【总结】"开头
+            if not response.startswith("【总结】"):
+                response = "【总结】\n" + response
             return response
         except Exception as e:
             print(f"  [WARN] AI分析失败: {e}，使用原始内容")
             # 降级：使用原始内容
-            return f"""**总结**
+            return f"""【总结】
 核心观点：{title}
 
 事件背景：{source}
@@ -100,7 +101,7 @@ class AIAnalyzer:
 
 未来展望：请关注后续发展
 
-**参考链接**
+【参考链接】
 {article.get('url', '')}"""
 
     def analyze_important_news(self, articles: List[Dict]) -> str:
@@ -128,7 +129,7 @@ class AIAnalyzer:
 
 请严格按照以下格式输出：
 
-**重要消息**
+【重要消息】
 
 对于每条重要新闻，请按以下格式分析：
 1. 【新闻标题】来自【来源】
@@ -151,21 +152,27 @@ class AIAnalyzer:
 5. 基于实际新闻内容分析，不要编造
 6. 如果没有特别重要的消息，请说明"本次获取的新闻暂无特别重要的行业影响消息"
 
+【投资建议】
+根据获取的财经新闻，给出投资建议，包括中国和美国的基金、股票的投资建议，只需要细分到领域和行业
+例如：
+    1.建议投资中国某行业的股票/基金，理由是...
+    2.建议投资美国某行业的股票/基金，理由是...
+    
 请只输出分析内容，格式要清晰、层次要分明。"""
 
         try:
             response = self._call_api(prompt)
-            # 确保以"**重要消息**"开头
-            if not response.startswith("**重要消息**") and "**重要消息**" in response:
+            # 确保以"【重要消息】"开头
+            if not response.startswith("【重要消息】") and "【重要消息】" in response:
                 # 提取重要消息部分
-                start = response.find("**重要消息**")
+                start = response.find("【重要消息】")
                 response = response[start:]
-            elif not response.startswith("**重要消息**"):
-                response = "**重要消息**\n\n" + response
+            elif not response.startswith("【重要消息】"):
+                response = "【重要消息】\n\n" + response
             return response
         except Exception as e:
             print(f"[WARN] 重要消息分析失败: {e}")
-            return """**重要消息**
+            return """【重要消息】
 
 基于当前获取的新闻，本次获取的新闻暂无特别重要的行业影响消息。
 

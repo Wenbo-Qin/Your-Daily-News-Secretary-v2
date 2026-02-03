@@ -64,13 +64,13 @@ class FinanceSummarySender:
 
     def generate_ai_summary(self, article: dict) -> str:
         """为文章生成AI详细总结"""
-        print(f"  正在AI分析: {article['title'][:30]}...")
+        print(f"  正在AI分析: {article['title'][:200]}...")
 
         # 检查是否配置了API密钥
         if not os.getenv('ZHIPU_API_KEY') or os.getenv('ZHIPU_API_KEY') == 'your_zhipu_api_key_here':
             print(f"  [INFO] 未配置智谱API密钥，使用原始内容")
             content = article.get('content') or article.get('summary', '')
-            return f"""**总结**
+            return f"""【总结】
 核心观点：{article['title']}
 
 事件背景：{article.get('source', '')}
@@ -84,13 +84,13 @@ class FinanceSummarySender:
 
 未来展望：请关注后续发展
 
-**参考链接**
+【参考链接】
 {article.get('url', '')}"""
 
         try:
             # 调用AI分析器
             ai_summary = self.analyzer.generate_news_summary(article)
-            # 确保以**总结**开头
+            # 确保以【总结】开头
             if not ai_summary.startswith("总结"):
                 ai_summary = "【总结】\n" + ai_summary
             # 添加参考链接
@@ -151,7 +151,7 @@ class FinanceSummarySender:
 
         # 获取每个源的新闻
         for source in sources_to_fetch:
-            print(f"正在获取 {source} 的新闻（5条）...")
+            print(f"正在获取 {source} 的新闻（5条，注意，这里实际是3条，因为我改了参数）...")
 
             if source in self.fetcher.sources:
                 try:
@@ -276,7 +276,7 @@ class FinanceSummarySender:
         # 检查是否配置了API密钥
         if not os.getenv('ZHIPU_API_KEY') or os.getenv('ZHIPU_API_KEY') == 'your_zhipu_api_key_here':
             print(f"  [INFO] 未配置智谱API密钥，跳过AI分析")
-            important_analysis = """**重要消息**
+            important_analysis = """【重要消息】
 
 基于当前获取的新闻，本次获取的新闻暂无特别重要的行业影响消息。
 
@@ -287,7 +287,7 @@ class FinanceSummarySender:
         else:
             try:
                 important_analysis = self.analyzer.analyze_important_news(all_articles)
-                # 确保以**重要消息**开头
+                # 确保以【重要消息】开头
                 if not important_analysis.startswith("【重要消息】"):
                     important_analysis = "【重要消息】\n\n" + important_analysis
             except Exception as e:

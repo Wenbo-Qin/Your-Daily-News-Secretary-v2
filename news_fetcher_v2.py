@@ -697,7 +697,6 @@ class NewsFetcher:
             # 东方财富的首页和财经要闻页面
             urls_to_try = [
                 "https://www.eastmoney.com/default.html",
-                "https://finance.eastmoney.com/news/cjyw.html",
                 "https://www.eastmoney.com/"
             ]
 
@@ -911,9 +910,7 @@ class NewsFetcher:
 
         try:
             urls_to_try = [
-                "https://www.10jqka.com.cn/",
-                "https://www.10jqka.com.cn/newscore/",
-                "https://www.10jqka.com.cn/newscore/"
+                "https://www.10jqka.com.cn/"
             ]
 
             headers = {
