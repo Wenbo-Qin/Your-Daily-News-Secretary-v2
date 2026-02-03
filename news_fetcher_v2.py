@@ -658,7 +658,7 @@ class NewsFetcher:
                 if 'index.d.html' in href or 'page=' in href:
                     continue
 
-                print(f"    处理: {title[:30]}...")
+                print(f"    处理: {title[:60]}...")
 
                 # 尝试获取全文内容
                 content = self.fetch_full_article(href)
@@ -739,7 +739,7 @@ class NewsFetcher:
                 elif not href.startswith('http'):
                     href = 'https://www.eastmoney.com' + href
 
-                print(f"      处理: {title[:30]}...")
+                print(f"      处理: {title[:60]}...")
 
                 # 使用专用方法获取东方财富文章内容
                 content = self._fetch_eastmoney_article(href)
@@ -766,6 +766,46 @@ class NewsFetcher:
 
         return articles
 
+    def _fetch_eastmoney_article(self, url: str) -> str:
+        """专门获取东方财富文章内容"""
+        try:
+            headers = {'User-Agent': 'Mozilla/5.0'}
+            response = requests.get(url, headers=headers, proxies=PROXIES, timeout=15)
+
+            if response.status_code != 200:
+                return ""
+
+            soup = BeautifulSoup(response.content, 'lxml')
+
+            # 尝试多种内容选择器
+            content_selectors = [
+                '.article-body',
+                'article',
+                '.article-content',
+                '.content',
+                '#content',
+            ]
+
+            for selector in content_selectors:
+                elements = soup.select(selector)
+                if elements:
+                    # 提取所有段落文本
+                    paragraphs = []
+                    for elem in elements:
+                        for p in elem.find_all('p'):
+                            text = p.get_text(strip=True)
+                            if text:
+                                paragraphs.append(text)
+
+                    if paragraphs:
+                        content = ' '.join(paragraphs[:10])
+                        if len(content) > 50:
+                            return content
+
+            return ""
+
+        except Exception as e:
+            return ""
     def _method_chinese_news_sites(self, source_name: str, max_articles: int, source_config: Dict) -> List[Dict]:
         """中文财经网站通用方法（中国证券报等）"""
         if source_name not in ['china_securities', 'tencent_finance', 'sohu_finance']:
