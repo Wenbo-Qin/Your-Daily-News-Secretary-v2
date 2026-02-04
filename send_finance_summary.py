@@ -67,7 +67,7 @@ class FinanceSummarySender:
         print(f"  正在AI分析: {article['title'][:200]}...")
 
         # 检查是否配置了API密钥
-        if not os.getenv('ZHIPU_API_KEY') or os.getenv('ZHIPU_API_KEY') == 'your_zhipu_api_key_here':
+        if not os.getenv('ZHIPU_API_KEY'):
             print(f"  [INFO] 未配置智谱API密钥，使用原始内容")
             content = article.get('content') or article.get('summary', '')
             return f"""【总结】
@@ -94,7 +94,7 @@ class FinanceSummarySender:
             if not ai_summary.startswith("【总结】"):
                 ai_summary = "【总结】\n" + ai_summary
             # 添加参考链接
-            if "参考链接" not in ai_summary:
+            if "【参考链接】" not in ai_summary:
                 ai_summary += f"\n【参考链接】\n{article.get('url', '')}"
             return ai_summary
         except Exception as e:
@@ -151,14 +151,14 @@ class FinanceSummarySender:
 
         # 获取每个源的新闻
         for source in sources_to_fetch:
-            print(f"正在获取 {source} 的新闻（5条，注意，这里实际是1条，因为我改了下面max_articles的参数）...")
+            print(f"正在获取 {source} 的新闻（5条，注意，这里实际是3条，因为我改了下面max_articles的参数）...")
 
             if source in self.fetcher.sources:
                 try:
                     articles = self.fetcher.fetch_with_retries(
                         source,
                         self.fetcher.sources[source],
-                        max_articles=1
+                        max_articles=3
                     )
 
                     if articles:
