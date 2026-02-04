@@ -91,7 +91,7 @@ class FinanceSummarySender:
             # 调用AI分析器
             ai_summary = self.analyzer.generate_news_summary(article)
             # 确保以【总结】开头
-            if not ai_summary.startswith("总结"):
+            if not ai_summary.startswith("【总结】"):
                 ai_summary = "【总结】\n" + ai_summary
             # 添加参考链接
             if "参考链接" not in ai_summary:
@@ -151,14 +151,14 @@ class FinanceSummarySender:
 
         # 获取每个源的新闻
         for source in sources_to_fetch:
-            print(f"正在获取 {source} 的新闻（5条，注意，这里实际是3条，因为我改了参数）...")
+            print(f"正在获取 {source} 的新闻（5条，注意，这里实际是1条，因为我改了下面max_articles的参数）...")
 
             if source in self.fetcher.sources:
                 try:
                     articles = self.fetcher.fetch_with_retries(
                         source,
                         self.fetcher.sources[source],
-                        max_articles=3
+                        max_articles=1
                     )
 
                     if articles:
@@ -242,7 +242,7 @@ class FinanceSummarySender:
             # 检查消息长度，Telegram限制4096字符
             if len(full_message) > 4000:
                 # 如果太长，拆分为更小的批次
-                smaller_batch_size = 5
+                smaller_batch_size = 1
                 for j in range(0, len(batch), smaller_batch_size):
                     smaller_batch = batch[j:j + smaller_batch_size]
                     smaller_parts = [
