@@ -102,7 +102,7 @@ PROXY_PORT=7897
 # 【正式测试】与telegram bot 发送消息一致 （推荐使用，因为其他的我还没测试）
 python send_finance_summary.py
 
-# 测试1条新闻
+# 测试1条新闻 (可用)
 python telegram_news_bot.py --test
 
 # 获取新闻
