@@ -151,14 +151,14 @@ class FinanceSummarySender:
 
         # 获取每个源的新闻
         for source in sources_to_fetch:
-            print(f"正在获取 {source} 的新闻（5条，注意，这里实际是1条，因为我改了下面max_articles的参数）...")
+            print(f"正在获取 {source} 的新闻（5条，注意，这里实际是3条，因为我改了下面max_articles的参数）...")
 
             if source in self.fetcher.sources:
                 try:
                     articles = self.fetcher.fetch_with_retries(
                         source,
                         self.fetcher.sources[source],
-                        max_articles=1
+                        max_articles=3
                     )
 
                     if articles:
