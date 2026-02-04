@@ -148,14 +148,13 @@ class TelegramNewsBot:
         lines = []
         lines.append(f"📰 {source_name}")
         lines.append("=" * 40)
-
         articles = result['articles'].get(source_name, [])
         if not articles:
             lines.append("暂无新闻")
         else:
             for i, article in enumerate(articles[:5], 1):
                 lines.append(f"{i}. {article['title']}")
-                lines.append(f"   {article['summary'][:80]}...")
+                lines.append(f"   {article['summary']}...")
                 lines.append("")
 
         lines.append("=" * 40)
@@ -219,11 +218,11 @@ def run_test_message():
     # 获取1条新闻
     print("正在获取新闻...")
     result = bot.skill.get_news_summary(max_articles=1, sources=['sina_finance'])
-
     if result['total_articles'] > 0:
         # 格式化消息
-        message = bot._format_source_news(result, '新浪财经')
-
+        source = result['articles']['sina_finance'][0]['source']
+        message = bot._format_source_news(result, source)
+        print(message)
         # 发送到Telegram
         print("发送到Telegram...")
         success = bot.send_message(CHAT_ID, message)
