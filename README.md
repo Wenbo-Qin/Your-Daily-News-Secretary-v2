@@ -98,7 +98,10 @@ PROXY_PORT=7897
 
 #### 方法2: 命令行
 
-```bash
+```python
+# 【正式测试】与telegram bot 发送消息一致 （推荐使用，因为其他的我还没测试）
+python send_finance_summary.py
+
 # 测试1条新闻
 python telegram_news_bot.py --test
 
@@ -115,7 +118,7 @@ python telegram_news_bot.py --cmd '/search AI'
 |------|------|
 | `telegram_news_bot.py` | Telegram Bot - 主要使用方式 |
 | `news_fetcher_v2.py` | 新闻抓取器（支持5种重试方法） |
-| `openclaw_news_skill.py` | OpenClaw Skill接口 |
+| `openclaw_news_skill.py` | OpenClaw Skill接口 （正在开发）|
 | `config/sources.yaml` | 新闻源配置（25个源） |
 | `config.py` | 配置管理 |
 
@@ -134,7 +137,7 @@ Reuters, Bloomberg, CNBC, Yahoo Finance, The Verge, Ars Technica, NVIDIA, AI New
 - ✅ 英文新闻自动翻译
 - ✅ Telegram Bot集成
 - ✅ 关键词搜索
-- ✅ 用户偏好管理
+- ✅ 用户偏好管理 （正在开发）
 
 ## 文档
 
@@ -154,7 +157,10 @@ python-dotenv
 
 ## 测试
 
-```bash
+```python
+# 【正式测试】与telegram bot 发送消息一致
+python send_finance_summary.py
+
 # 测试1条新闻
 python telegram_news_bot.py --test
 
