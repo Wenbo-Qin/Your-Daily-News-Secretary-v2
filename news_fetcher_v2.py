@@ -217,8 +217,9 @@ class NewsFetcher:
             methods.append(self._method_sina_finance_special)
         elif source_name == 'eastmoney':
             methods.append(self._method_eastmoney_special)
-        elif source_name == 'tonghuashun':
-            methods.append(self._method_tonghuashun_special)
+        # elif source_name == 'tonghuashun':
+        #    # methods.append(self._method_tonghuashun_special)
+        #    methods.append(self._method_scrape_beautifulsoup)
         elif source_name == 'china_securities':
             methods.append(self._method_china_securities_special)
         elif source_name in ['securities_times', 'tencent_finance', 'sohu_finance']:
@@ -242,6 +243,9 @@ class NewsFetcher:
                 self._method_scrape_requests,
                 self._method_generic
             ])
+            
+        elif source_type == 'tonghuashun':
+            methods.append(self._method_scrape_beautifulsoup)
 
         # 尝试每种方法，最多7次（增加了专用方法）
         max_attempts = min(len(methods), 7)
